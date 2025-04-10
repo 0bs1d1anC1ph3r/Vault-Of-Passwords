@@ -21,8 +21,8 @@ public class KeyManager {
 	private static final int SALT_LENGTH = 16;
 
 	private static final String RED = "\u001B[31m";
-	private static final String RESET = "\u001B[0m";
 	private static final String GREEN = "\u001B[32m";
+	private static final String RESET = "\u001B[0m";
 
 	public static SecretKey readyKeys(String passphrase) throws Exception {
 		System.out.println("\nAttempting to load keys...");

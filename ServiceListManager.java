@@ -20,7 +20,6 @@ public class ServiceListManager {
 		List<String> services = loadServiceList();
 		if (!serviceExists(service, services)) {
 			addService(service, services);
-			System.out.println(GREEN + "Added and sorted: " + service + RESET);
 		} else {
 			System.out.println(RED + "Service already exists: " + service + RESET);
 		}
