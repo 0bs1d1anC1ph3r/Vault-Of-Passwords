@@ -7,19 +7,17 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.Collections;
 import java.util.List;
+import static obs1d1anc1ph3r.vaultofpasswords.utils.ColorUtil.BRIGHT_RED;
+import static obs1d1anc1ph3r.vaultofpasswords.utils.ColorUtil.RESET;
 
 public class UserListManager {
-
-	private static final String RED = "\u001B[31m";
-	private static final String GREEN = "\u001B[32m";
-	private static final String RESET = "\u001B[0m";
 
 	private static final String PASSWORD_DIRECTORY_PATH = ".PASSWORDS/";
 
 	public static void addToUserList(String service, String username) throws IOException {
 		Path userListFile = Paths.get(PASSWORD_DIRECTORY_PATH + service + "/userlist.csv");
 
-		if (!userListExists(userListFile)) {
+		if (!userListExists(service)) {
 			generateUserList(userListFile);
 		}
 
@@ -27,7 +25,7 @@ public class UserListManager {
 
 		Collections.sort(usernames);
 		if (usernameExists(usernames, username + ".vault")) {
-			System.out.println(RED + "Username already exists for this service." + RESET);
+			System.out.println(BRIGHT_RED + "Username already exists for this service." + RESET);
 			return;
 		}
 
@@ -37,11 +35,24 @@ public class UserListManager {
 
 	}
 
+	public static List<String> loadUserList(String service) throws IOException {
+		service = service.toUpperCase();
+		if (!userListExists(service)) {
+			return null;
+		}
+
+		Path userListFile = Paths.get(PASSWORD_DIRECTORY_PATH + service + "/userlist.csv");
+		List<String> usernames = Files.readAllLines(userListFile);
+		Collections.sort(usernames);
+		return usernames;
+	}
+
 	private static boolean usernameExists(List<String> usernames, String username) {
 		return Collections.binarySearch(usernames, username) >= 0;
 	}
 
-	private static boolean userListExists(Path userListFile) {
+	private static boolean userListExists(String service) {
+		Path userListFile = Paths.get(PASSWORD_DIRECTORY_PATH + service + "/userlist.csv");
 		return Files.exists(userListFile);
 	}
 

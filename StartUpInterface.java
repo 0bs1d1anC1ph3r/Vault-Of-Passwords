@@ -1,31 +1,44 @@
 package obs1d1anc1ph3r.vaultofpasswords.userinterface;
 
 import javax.crypto.SecretKey;
+
 import obs1d1anc1ph3r.vaultofpasswords.encryption.argon2.Argon2HashManager;
 import obs1d1anc1ph3r.vaultofpasswords.encryption.keys.KeyManager;
 import obs1d1anc1ph3r.vaultofpasswords.userinterface.utils.PrintLogo;
+
+import static obs1d1anc1ph3r.vaultofpasswords.utils.ColorUtil.BRIGHT_GREEN;
+import static obs1d1anc1ph3r.vaultofpasswords.utils.ColorUtil.BRIGHT_RED;
+import static obs1d1anc1ph3r.vaultofpasswords.utils.ColorUtil.RESET;
 import obs1d1anc1ph3r.vaultofpasswords.utils.InputMask;
 
 public class StartUpInterface {
 
-	private static final String RED = "\u001B[31m";
-	private static final String GREEN = "\u001B[32m";
-	private static final String RESET = "\u001B[0m";
+	private static String password;
 
-	// Do not look at the logo class, it is scary
-	public static void startUserInterface() throws InterruptedException, Exception {
+	public StartUpInterface() throws Exception {
 		Argon2HashManager hashManager = new Argon2HashManager();
 		PrintLogo.printLogo();
-		String password = InputMask.maskedInput();
+		password = InputMask.maskedInput();
+		startUserInterface(hashManager);
+	}
+
+	// Do not look at the logo class, it is scary
+	private void startUserInterface(Argon2HashManager hashManager) throws InterruptedException, Exception {
+
 		if (hashManager.isCorrectPassword(password)) {
-			System.out.println(GREEN + "Correct password!" + RESET);
+			System.out.println(BRIGHT_GREEN + "Correct password!" + RESET);
 			SecretKey vaultKey = KeyManager.readyKeys(password);
 			MainMenu.startMainMenuInterface(vaultKey);
 		} else {
-			System.out.println(RED + "Too many failed attemps :(" + RESET);
+			System.out.println(BRIGHT_RED + "Too many failed attemps :(" + RESET);
 		}
 
 		System.out.println("Exiting program...\n");
 
 	}
+
+	public static void setPassword(String password) {
+		StartUpInterface.password = password;
+	}
+
 }

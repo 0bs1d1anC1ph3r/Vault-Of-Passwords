@@ -9,12 +9,11 @@ import javax.crypto.SecretKey;
 import obs1d1anc1ph3r.vaultofpasswords.encryption.aes.AES;
 import obs1d1anc1ph3r.vaultofpasswords.passwords.utils.ServiceListManager;
 
-public class FileManager {
+import static obs1d1anc1ph3r.vaultofpasswords.utils.ColorUtil.BRIGHT_GREEN;
+import static obs1d1anc1ph3r.vaultofpasswords.utils.ColorUtil.BRIGHT_YELLOW;
+import static obs1d1anc1ph3r.vaultofpasswords.utils.ColorUtil.RESET;
 
-	private static final String RED = "\u001B[31m";
-	private static final String GREEN = "\u001B[32m";
-	private static final String YELLOW = "\u001B[33m";
-	private static final String RESET = "\u001B[0m";
+public class FileManager {
 
 	private static final String PASSWORD_DIRECTORY_PATH = ".PASSWORDS/";
 
@@ -25,13 +24,13 @@ public class FileManager {
 
 		if (Files.notExists(passwords)) {
 			Files.createDirectories(passwords);
-			System.out.println(YELLOW + "Directory created: " + passwords.toString() + RESET);
+			System.out.println(BRIGHT_GREEN + "Directory created: " + passwords.toString() + RESET);
 		}
 
 		if (Files.notExists(serviceDirectory)) {
 			Files.createDirectories(serviceDirectory);
 			ServiceListManager.updateServiceList(service);
-			System.out.println(YELLOW + "Service directory created: " + serviceDirectory.toString() + RESET);
+			System.out.println(BRIGHT_YELLOW + "Service directory created: " + serviceDirectory.toString() + RESET);
 		}
 
 	}

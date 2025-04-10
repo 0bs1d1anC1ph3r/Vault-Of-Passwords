@@ -13,16 +13,15 @@ import javax.crypto.spec.SecretKeySpec;
 import obs1d1anc1ph3r.vaultofpasswords.encryption.aes.AES;
 import obs1d1anc1ph3r.vaultofpasswords.encryption.aes.AESKeyGenerator;
 import obs1d1anc1ph3r.vaultofpasswords.encryption.argon2.Argon2KeyGenerator;
+import static obs1d1anc1ph3r.vaultofpasswords.utils.ColorUtil.BRIGHT_GREEN;
+import static obs1d1anc1ph3r.vaultofpasswords.utils.ColorUtil.BRIGHT_RED;
+import static obs1d1anc1ph3r.vaultofpasswords.utils.ColorUtil.RESET;
 
 public class KeyManager {
 
 	private static final String KEY_DIRECTORY = ".KEYS/";
 	private static final String VAULT_KEY_FILE = ".KEYS/vault.key";
 	private static final int SALT_LENGTH = 16;
-
-	private static final String RED = "\u001B[31m";
-	private static final String GREEN = "\u001B[32m";
-	private static final String RESET = "\u001B[0m";
 
 	public static SecretKey readyKeys(String passphrase) throws Exception {
 		System.out.println("\nAttempting to load keys...");
@@ -34,7 +33,7 @@ public class KeyManager {
 		Path vaultKeyPath = Paths.get(VAULT_KEY_FILE);
 
 		if (!keysExist(vaultKeyPath)) {
-			System.err.println(RED + "Key files not found." + RESET);
+			System.err.println(BRIGHT_RED + "Key files not found." + RESET);
 			System.out.println("Generating new keys...");
 			generateKeyFiles(passphrase, vaultKeyPath);
 		}
@@ -51,9 +50,9 @@ public class KeyManager {
 			SecretKey vaultKey = AESKeyGenerator.generateAESKey();
 
 			saveKeys(vaultKey, vaultKeyPath, skeletonKey, salt);
-			System.out.println(GREEN + "Keys generated and saved successfully." + RESET);
+			System.out.println(BRIGHT_GREEN + "Keys generated and saved successfully." + RESET);
 		} catch (Exception ex) {
-			System.err.println(RED + "ERROR GENERATING KEYS: " + ex.getMessage() + RESET);
+			System.err.println(BRIGHT_RED + "ERROR GENERATING KEYS: " + ex.getMessage() + RESET);
 			System.out.println("Exiting program...\n");
 			System.exit(15);
 		}
@@ -67,10 +66,10 @@ public class KeyManager {
 			fos.write(salt);
 			fos.write(encryptedVaultKey);
 		} catch (IOException e) {
-			System.err.println(RED + "ERROR SAVING KEYS: " + e.getMessage() + RESET);
+			System.err.println(BRIGHT_RED + "ERROR SAVING KEYS: " + e.getMessage() + RESET);
 			throw e;
 		} catch (GeneralSecurityException e) {
-			System.err.println(RED + "SECURITY ERROR: " + e.getMessage() + RESET);
+			System.err.println(BRIGHT_RED + "SECURITY ERROR: " + e.getMessage() + RESET);
 			throw e;
 		}
 	}
@@ -84,7 +83,7 @@ public class KeyManager {
 			byte[] decryptedVaultKey = AES.decryptAES(encryptedVaultKey, skeletonKey);
 			return new SecretKeySpec(decryptedVaultKey, "AES");
 		} catch (Exception ex) {
-			System.err.println(RED + "ERROR LOADING KEYS: " + ex.getMessage() + RESET);
+			System.err.println(BRIGHT_RED + "ERROR LOADING KEYS: " + ex.getMessage() + RESET);
 			throw ex;
 		}
 	}

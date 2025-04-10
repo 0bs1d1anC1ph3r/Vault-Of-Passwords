@@ -1,6 +1,8 @@
 package obs1d1anc1ph3r.vaultofpasswords.passwords;
 
 import java.security.SecureRandom;
+import static obs1d1anc1ph3r.vaultofpasswords.utils.ColorUtil.BRIGHT_RED;
+import static obs1d1anc1ph3r.vaultofpasswords.utils.ColorUtil.RESET;
 
 public class PasswordGenerator {
 
@@ -15,7 +17,7 @@ public class PasswordGenerator {
 
 	public static String generateSecurePassword(int length) {
 		if (length < 12) {
-			throw new IllegalArgumentException("Password length should be at least 12 characters.");
+			throw new IllegalArgumentException(BRIGHT_RED + "Password length should be at least 12 characters." + RESET);
 		}
 
 		StringBuilder password = new StringBuilder(length);
